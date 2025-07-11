@@ -1,0 +1,118 @@
+<script>
+const in1 = document.getElementById("height_cm");
+const in2 = document.getElementById("height_m");
+const in3 = document.getElementById("weight");
+const in4 = document.getElementById("male");
+const in5 = document.getElementById("female");
+const in6 = document.getElementById("age");
+const out1 = document.getElementById("BMI_label");
+const out2 = document.getElementById("fat_label");
+var h = 0;
+var w = 0;
+var bmi = 0;
+var out_bmi = 0;
+var gender = 0;
+var out_gender = 0;
+var age = 0;
+var fat = 0;
+function r(x){
+  var s = x.toString();
+  var num = "";
+  for(var i = 0; i < s.length; i++){
+    if(s[i] == '.'){
+      num = s.substr(0, i+3);
+      return +num;
+    }
+  }
+  return x;
+}
+function getBMI(){
+  if(h && w){
+    bmi = w/(h*h);
+    out_bmi = r(bmi)
+    out1.textContent = out_bmi;
+  }else{
+    bmi = 0;
+    out1.textContent = "--";
+  }
+}
+function getfat(){
+  if(bmi && gender && age){
+    fat = 1.2*bmi+0.23*age-10.8*(gender-1)-5.4;
+    out_fat = r(fat)
+    out2.textContent = out_fat;
+  }else{
+    fat = 0;
+    out2.textContent = "--";
+  }
+}
+in1.addEventListener("input",()=>{
+  in2.value = in1.value/100;
+  h = in2.value;
+  getBMI();
+  getfat();
+});
+in2.addEventListener("input",()=>{
+  in1.value = in2.value*100;
+  h = in2.value;
+  getBMI();
+  getfat();
+});
+in3.addEventListener("input",()=>{
+  w = in3.value;
+  getBMI();
+  getfat();
+});
+in4.addEventListener('change',()=>{
+  if(in4.checked) {
+    gender = 2;
+    getfat();
+  }
+});
+in5.addEventListener('change',()=>{
+  if(in5.checked) {
+    gender = 1;
+    getfat();
+  }
+});
+in6.addEventListener("input",()=>{
+  age = in6.value;
+  getfat();
+});
+</script>
+<h1>作業 : BMI、體脂率計算機</h1>
+身高 :
+<br>
+<input type="number" id="height_cm" placeholder="單位 : 公分">
+公分
+<br>
+or
+<br>
+<input type="number" id="height_m" placeholder="單位 : 公尺">
+公尺
+<br><br>
+體重 :
+<br>
+<input type="number" id="weight" placeholder="單位 : 公斤">
+公斤
+<br><br>
+BMI :
+<br>
+<label id="BMI_label">--</label>
+<br><br>
+性別 :
+<br>
+<input type="radio" id="male" name="gender" value="1">
+<label for="male">男</label>
+<br>
+<input type="radio" id="female" name="gender" value="0">
+<label for="female">女</label>
+<br><br>
+年齡 :
+<br>
+<input type="number" id="age" placeholder="單位 : 年">
+<br><br>
+體脂肪率 :
+<br>
+<label id="fat_label">--</label>
+%
